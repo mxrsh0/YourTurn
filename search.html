@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YourTurn — Find opportunities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/onboarding.css"><link rel="stylesheet" href="css/search.css">
+</head>
+<body>
+<main class="search-shell">
+<header class="search-top"><a class="brand" href="index.html"><span class="brand-mark">Y</span><span>YourTurn</span><span class="beta-badge">BETA</span></a><div class="top-actions"><a href="profile.html">My profile</a><a href="index.html">Exit</a></div></header>
+<section class="search-hero"><p class="eyebrow"><span class="eyebrow-dot"></span> Your opportunity search</p><h1>Let's find your <span>next turn.</span></h1><p>Search across job boards, recruitment agencies and company career pages — then narrow the results down to what actually suits you.</p>
+<div class="search-box"><div class="search-input-wrap"><span>⌕</span><input id="job-query" value="3D Artist" aria-label="Job search" placeholder="Job title, skill or what you want to do"></div><div class="location-wrap"><span>⌖</span><input id="job-location" value="United Kingdom" aria-label="Location" placeholder="Location"></div><button id="search-button" class="btn btn-primary">Search <span class="btn-arrow">→</span></button></div></section>
+<section class="search-layout">
+<aside class="filters" aria-label="Search filters"><div class="filter-heading"><strong>Refine your search</strong><button id="clear-filters" type="button">Clear</button></div>
+<div class="filter-group"><label>Experience</label><label class="filter-check"><input type="checkbox" data-filter="entry"> Entry level / no experience <span>42</span></label><label class="filter-check"><input type="checkbox" data-filter="junior"> Junior <span>67</span></label><label class="filter-check"><input type="checkbox" data-filter="mid"> Mid-level <span>81</span></label><label class="filter-check"><input type="checkbox" data-filter="senior"> Senior <span>39</span></label></div>
+<div class="filter-group"><label>Work style</label><label class="filter-check"><input type="checkbox" data-filter="remote"> Remote <span>54</span></label><label class="filter-check"><input type="checkbox" data-filter="hybrid"> Hybrid <span>73</span></label><label class="filter-check"><input type="checkbox" data-filter="onsite"> On-site <span>102</span></label></div>
+<div class="filter-group"><label>Job type</label><label class="filter-check"><input type="checkbox" data-filter="fulltime"> Full-time <span>143</span></label><label class="filter-check"><input type="checkbox" data-filter="parttime"> Part-time <span>26</span></label><label class="filter-check"><input type="checkbox" data-filter="contract"> Contract / freelance <span>31</span></label></div>
+<div class="filter-group"><label>Posted</label><select id="posted-filter"><option value="any">Any time</option><option value="24">Past 24 hours</option><option value="7">Past week</option><option value="30">Past month</option></select></div>
+<div class="filter-group"><label>Salary</label><div class="salary-row"><input id="salary-min" type="number" min="0" step="1000" placeholder="Min £"><input id="salary-max" type="number" min="0" step="1000" placeholder="Max £"></div></div>
+</aside>
+<div class="results-area"><div class="results-toolbar"><div><strong id="result-count">183 opportunities</strong><span id="search-summary">across the UK</span></div><select id="sort-results" aria-label="Sort results"><option value="relevant">Most relevant</option><option value="recent">Newest first</option><option value="salary">Salary</option></select></div>
+<div id="results" class="results-list">
+<article class="job-card"><div class="job-source">Company career page <span>NEW</span></div><h2>Junior 3D Environment Artist</h2><p class="company">Independent game studio · Manchester / Hybrid</p><div class="job-tags"><span>Junior</span><span>Hybrid</span><span>No degree required</span></div><p class="job-description">Create environments, props and materials for a growing game team. Personal projects and demonstrable skills welcome.</p><div class="job-bottom"><strong>£28,000 — £35,000</strong><small>Posted today</small><button class="save-job" type="button">♡ Save</button></div></article>
+<article class="job-card"><div class="job-source">Recruitment agency <span>AGENCY</span></div><h2>3D Artist / Generalist</h2><p class="company">Creative technology agency · Birmingham / Remote</p><div class="job-tags"><span>Entry friendly</span><span>Remote</span><span>Blender</span></div><p class="job-description">Work across modelling, texturing and visual development. The team values portfolios and practical ability over a rigid checklist.</p><div class="job-bottom"><strong>£30,000 — £42,000</strong><small>Posted yesterday</small><button class="save-job" type="button">♡ Save</button></div></article>
+<article class="job-card"><div class="job-source">Job board <span>AGGREGATED</span></div><h2>3D Artist</h2><p class="company">Digital production company · Leeds / On-site</p><div class="job-tags"><span>Mid-level</span><span>On-site</span><span>Full-time</span></div><p class="job-description">A broad 3D role covering asset creation and visual development across commercial projects.</p><div class="job-bottom"><strong>£35,000 — £45,000</strong><small>Posted 2 days ago</small><button class="save-job" type="button">♡ Save</button></div></article>
+</div>
+<div class="beta-note"><strong>Search BETA.</strong> These are illustrative results for the interface. Real source integrations, live counts, deduplication and ranking will be connected during the technical stage.</div>
+</div></section>
+</main><script src="js/search.js"></script></body></html>
