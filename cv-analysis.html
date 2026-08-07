@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YourTurn — CV analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/onboarding.css">
+  <link rel="stylesheet" href="css/cv-analysis.css">
+</head>
+<body>
+<main class="onboarding-shell">
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="onboarding-top">
+    <a class="brand" href="index.html"><span class="brand-mark">Y</span><span>YourTurn</span><span class="beta-badge">BETA</span></a>
+    <a class="exit-link" href="cv.html">Back to CV</a>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Understanding your CV</span><span>Analysis</span></div>
+    <div class="progress-track"><div class="progress-bar" id="analysis-progress" style="width:8%"></div></div>
+  </div>
+
+  <section class="analysis-main">
+    <div class="analysis-intro fade-in" id="analysis-intro">
+      <p class="eyebrow"><span class="eyebrow-dot"></span> Your CV, understood</p>
+      <h1>Let's see what your CV is <span>already saying.</span></h1>
+      <p class="intro">YourTurn will eventually look at your experience, skills, wording and career direction to help you understand what is working and where you could strengthen your application.</p>
+      <div class="analysis-explainer">
+        <div><span>01</span><strong>Understand</strong><p>Identify your experience, skills and useful patterns.</p></div>
+        <div><span>02</span><strong>Improve</strong><p>Highlight areas that could make your CV clearer or stronger.</p></div>
+        <div><span>03</span><strong>Match</strong><p>Use what we learn to make future job searches more relevant.</p></div>
+      </div>
+      <button class="btn btn-primary analysis-start" id="start-analysis" type="button"><span>Analyse my CV</span><span class="btn-arrow">→</span></button>
+      <p class="privacy-note"><strong>You stay in control.</strong> YourTurn should explain its suggestions rather than quietly changing your CV.</p>
+    </div>
+
+    <div class="analysis-working hidden" id="analysis-working" aria-live="polite">
+      <div class="scan-orb"><span></span></div>
+      <p class="eyebrow">YourTurn is taking a look</p>
+      <h2 id="working-title">Reading your experience...</h2>
+      <p id="working-detail">We're looking for useful information, not judging your career.</p>
+      <div class="scan-list">
+        <div class="scan-item" data-scan="0"><span>○</span> Experience</div>
+        <div class="scan-item" data-scan="1"><span>○</span> Skills</div>
+        <div class="scan-item" data-scan="2"><span>○</span> Clarity & structure</div>
+        <div class="scan-item" data-scan="3"><span>○</span> Potential opportunities</div>
+      </div>
+    </div>
+
+    <div class="analysis-results hidden" id="analysis-results">
+      <div class="results-heading">
+        <div><p class="eyebrow"><span class="eyebrow-dot"></span> Your starting point</p><h2>Here's what YourTurn <span>can help with.</span></h2></div>
+        <div class="beta-score"><strong>72</strong><span>CV snapshot</span></div>
+      </div>
+
+      <div class="result-grid">
+        <article class="result-panel positive"><span class="result-tag">Looking good</span><h3>Experience is visible</h3><p>Your experience gives employers useful evidence of what you've actually done.</p></article>
+        <article class="result-panel improve"><span class="result-tag">Could improve</span><h3>Make achievements clearer</h3><p>Some responsibilities could eventually be rewritten around outcomes and measurable results.</p><button type="button" class="mini-action">Show me an example →</button></article>
+        <article class="result-panel match"><span class="result-tag">YourTurn insight</span><h3>There's more to search</h3><p>Your skills may fit several related job titles, so we'll eventually search beyond one exact phrase.</p></article>
+      </div>
+
+      <div class="insight-box">
+        <div class="insight-icon">✦</div>
+        <div><strong>This isn't a pass or fail.</strong><p>The snapshot is simply a starting point. YourTurn's job is to help you understand what you can improve and where your experience could take you.</p></div>
+      </div>
+
+      <div class="actions"><a class="skip" href="cv.html">Back to CV</a><a class="btn btn-primary" href="profile.html">Continue to my profile <span class="btn-arrow">→</span></a></div>
+    </div>
+  </section>
+</main>
+<script src="js/cv-analysis.js"></script>
+</body>
+</html>
