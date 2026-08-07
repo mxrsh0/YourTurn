@@ -61,22 +61,18 @@
         email,
         password,
         options: {
-          data: { first_name: firstName }
+          data: {
+            first_name: firstName,
+            target_role: goal
+          }
         }
       });
 
       if (error) throw error;
       if (!data.user) throw new Error('Your account could not be created.');
 
-      const { error: profileError } = await client.from('profiles').upsert({
-        id: data.user.id,
-        full_name: firstName,
-        target_roles: goal ? [goal] : []
-      });
-
-      if (profileError) throw profileError;
-
-      // Supabase may require email confirmation before a session is created.
+      // The database trigger creates the profile securely on auth.users insert.
+      // This avoids requiring an authenticated browser session during signup.
       const destination = data.session ? 'tutorial.html' : 'account-confirmation.html';
       window.location.href = destination;
     } catch (error) {
