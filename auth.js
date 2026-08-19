@@ -36,7 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      window.location.href = "jobs.html";
+      const next = new URLSearchParams(window.location.search).get("next");
+      const safeNext = next && /^[a-z0-9-]+\.html$/i.test(next) ? next : "jobs.html";
+      window.location.href = safeNext;
     });
   }
 
