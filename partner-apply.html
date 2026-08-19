@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Apply for YourTurn partner access.">
+  <title>Apply for Partner Access — YourTurn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="auth.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="auth.js" defer></script>
+</head>
+<body class="auth-page">
+  <header class="auth-header">
+    <a class="auth-brand" href="index.html">YourTurn</a>
+    <a class="auth-back" href="partner-login.html">Partner Login</a>
+  </header>
+  <main class="auth-main">
+    <section class="auth-layout" aria-labelledby="apply-title">
+      <aside class="auth-intro">
+        <p class="auth-label">Partner access</p>
+        <h1>Let's work together.</h1>
+        <p>Tell us about your organisation and how you plan to use YourTurn. Applications are reviewed before partner tools are enabled.</p>
+        <div class="partner-note">Partner access includes job posting and management tools, applicant updates and analytics. The first year is free, followed by a £10 yearly maintenance fee.</div>
+      </aside>
+      <div class="auth-form-wrap">
+        <h2 id="apply-title">Apply for access</h2>
+        <p class="auth-subtitle">You must have a YourTurn account before submitting a partner application.</p>
+        <form class="auth-form" id="partner-application-form">
+          <div class="form-row">
+            <div class="field"><label for="company_name">Company / agency name</label><input id="company_name" name="company_name" type="text" required></div>
+            <div class="field"><label for="contact_name">Your name</label><input id="contact_name" name="contact_name" type="text" autocomplete="name" required></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="business_email">Business email</label><input id="business_email" name="business_email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="website">Website</label><input id="website" name="website" type="url" placeholder="https://"></div>
+            <div class="field"><label for="company_type">Organisation type</label><select id="company_type" name="company_type"><option value="">Select one</option><option>Employer</option><option>Recruitment agency</option><option>Employment business</option><option>Other</option></select></div>
+          </div>
+          <div class="field"><label for="job_posting_interest">What will you use YourTurn for?</label><textarea id="job_posting_interest" name="job_posting_interest" placeholder="For example: posting vacancies, managing applicants and viewing recruitment analytics."></textarea></div>
+          <div class="field"><label for="message">Anything else we should know?</label><textarea id="message" name="message" placeholder="Optional"></textarea></div>
+          <p class="form-message" aria-live="polite"></p>
+          <button class="auth-submit" type="submit">Submit Application</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
