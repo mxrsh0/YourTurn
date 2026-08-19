@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="description" content="YourTurn — find your next opportunity without the endless searching." />
+  <title>YourTurn — Find Your Next Opportunity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="grid-overlay"></div>
+
+  <main class="landing-shell" id="landing">
+    <section class="welcome-panel" aria-labelledby="welcome-title">
+      <div class="brand-mark" aria-label="YourTurn">
+        <span class="brand-symbol" aria-hidden="true"><span></span></span>
+        <span class="brand-name">YourTurn</span>
+      </div>
+
+      <div class="welcome-copy">
+        <p class="eyebrow">UK JOBS. ONE PLACE.</p>
+        <h1 id="welcome-title">Welcome to <span>YourTurn</span></h1>
+        <p class="motto">Find the right job faster — without searching everywhere.</p>
+        <p class="intro">YourTurn brings opportunities from trusted employers and agencies into one simple place, so you can spend less time searching and more time moving forward.</p>
+      </div>
+
+      <div class="access-tabs" role="tablist" aria-label="Account options">
+        <button class="access-tab active" type="button" role="tab" aria-selected="true" data-panel="signin">Sign in</button>
+        <button class="access-tab" type="button" role="tab" aria-selected="false" data-panel="create-account">Create Account</button>
+        <button class="access-tab" type="button" role="tab" aria-selected="false" data-panel="partner-login">Partner Login</button>
+      </div>
+
+      <div class="tab-panel" aria-live="polite">
+        <div class="panel-content active" id="signin">
+          <div>
+            <span class="panel-kicker">WELCOME BACK</span>
+            <h2>Continue your journey.</h2>
+            <p>Sign in to keep your applications, saved jobs and progress together.</p>
+          </div>
+          <button class="panel-action" type="button">Sign in <span aria-hidden="true">→</span></button>
+        </div>
+
+        <div class="panel-content" id="create-account" hidden>
+          <div>
+            <span class="panel-kicker">GET STARTED</span>
+            <h2>Your next opportunity starts here.</h2>
+            <p>Create an account and keep your job search, applications and updates in one place.</p>
+          </div>
+          <button class="panel-action" type="button">Create Account <span aria-hidden="true">→</span></button>
+        </div>
+
+        <div class="panel-content" id="partner-login" hidden>
+          <div>
+            <span class="panel-kicker">FOR EMPLOYERS &amp; AGENCIES</span>
+            <h2>Manage your opportunities.</h2>
+            <p>Partner with YourTurn to reach candidates and keep applicants informed throughout the process.</p>
+          </div>
+          <button class="panel-action" type="button">Partner Login <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+
+      <div class="trust-row">
+        <span><i class="status-dot"></i> UK focused</span>
+        <span>•</span>
+        <span>Built around better responses</span>
+        <span>•</span>
+        <span>Less searching. More doing.</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
