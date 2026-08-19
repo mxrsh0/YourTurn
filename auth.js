@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   if (signInForm) {
-    setBusy(signInForm, false);
     signInForm.addEventListener("submit", async (event) => {
       event.preventDefault();
       setMessage(signInForm, "");
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const email = signInForm.email.value.trim();
       const password = signInForm.password.value;
-      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
       if (error) {
         setMessage(signInForm, error.message || "We could not sign you in.", "error");
@@ -69,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         password,
         options: {
           data: { full_name: fullName },
-          emailRedirectTo: `${window.location.origin}/sign-in.html`,
+          emailRedirectTo: `${window.location.origin}/email-confirmed.html`,
         },
       });
 
@@ -79,13 +78,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if (data?.session) {
-        setMessage(createForm, "Account created. You can now sign in.", "success");
-      } else {
-        setMessage(createForm, "Account created. Check your email to verify your account before signing in.", "success");
-      }
       createForm.reset();
       setBusy(createForm, false);
+
+      if (data?.session) {
+        window.location.href = "jobs.html";
+        return;
+      }
+
+      window.location.href = `email-sent.html?email=${encodeURIComponent(email)}`;
     });
   }
 
