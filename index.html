@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#07111f" />
+  <meta name="theme-color" content="#f4f3f0" />
   <meta name="description" content="YourTurn — find your next opportunity without the endless searching." />
   <title>YourTurn — Find Your Next Opportunity</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -16,13 +16,18 @@
   <div class="ambient ambient-two"></div>
   <div class="grid-overlay"></div>
 
+  <header class="site-header">
+    <a class="site-brand" href="index.html" aria-label="YourTurn home">
+      <span class="brand-symbol" aria-hidden="true"><span></span></span>
+      <span>YourTurn</span>
+    </a>
+    <div class="header-banner" aria-label="YourTurn banner space">
+      <span>Banner space</span>
+    </div>
+  </header>
+
   <main class="landing-shell" id="landing">
     <section class="welcome-panel" aria-labelledby="welcome-title">
-      <div class="brand-mark" aria-label="YourTurn">
-        <span class="brand-symbol" aria-hidden="true"><span></span></span>
-        <span class="brand-name">YourTurn</span>
-      </div>
-
       <div class="welcome-copy">
         <p class="eyebrow">UK JOBS. ONE PLACE.</p>
         <h1 id="welcome-title">Welcome to <span>YourTurn</span></h1>
@@ -38,42 +43,34 @@
 
       <div class="tab-panel" aria-live="polite">
         <div class="panel-content active" id="signin">
-          <div>
-            <span class="panel-kicker">WELCOME BACK</span>
-            <h2>Continue your journey.</h2>
-            <p>Sign in to keep your applications, saved jobs and progress together.</p>
-          </div>
+          <div><span class="panel-kicker">WELCOME BACK</span><h2>Continue your journey.</h2><p>Sign in to keep your applications, saved jobs and progress together.</p></div>
           <button class="panel-action" type="button">Sign in <span aria-hidden="true">→</span></button>
         </div>
-
         <div class="panel-content" id="create-account" hidden>
-          <div>
-            <span class="panel-kicker">GET STARTED</span>
-            <h2>Your next opportunity starts here.</h2>
-            <p>Create an account and keep your job search, applications and updates in one place.</p>
-          </div>
+          <div><span class="panel-kicker">GET STARTED</span><h2>Your next opportunity starts here.</h2><p>Create an account and keep your job search, applications and updates in one place.</p></div>
           <button class="panel-action" type="button">Create Account <span aria-hidden="true">→</span></button>
         </div>
-
         <div class="panel-content" id="partner-login" hidden>
-          <div>
-            <span class="panel-kicker">FOR EMPLOYERS &amp; AGENCIES</span>
-            <h2>Manage your opportunities.</h2>
-            <p>Partner with YourTurn to reach candidates and keep applicants informed throughout the process.</p>
-          </div>
+          <div><span class="panel-kicker">FOR EMPLOYERS &amp; AGENCIES</span><h2>Manage your opportunities.</h2><p>Partner with YourTurn to reach candidates and keep applicants informed throughout the process.</p></div>
           <button class="panel-action" type="button">Partner Login <span aria-hidden="true">→</span></button>
         </div>
       </div>
-
-      <div class="trust-row">
-        <span><i class="status-dot"></i> UK focused</span>
-        <span>•</span>
-        <span>Built around better responses</span>
-        <span>•</span>
-        <span>Less searching. More doing.</span>
-      </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">YourTurn</div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="privacy-policy.html">Privacy &amp; Policy</a>
+        <a href="gdpr-rights.html">GDPR Rights</a>
+        <a href="https://buymeacoffee.com/9EBaCUugot" target="_blank" rel="noopener noreferrer">Support Me</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="partnerships.html">Partnerships</a>
+      </nav>
+      <p class="footer-note">YourTurn is a UK-focused job discovery service. © 2026 YourTurn.</p>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
