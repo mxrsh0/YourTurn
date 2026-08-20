@@ -43,10 +43,35 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();setMessage(partnerForm,"");setBusy(partnerForm,true);
     const {data:sessionData}=await supabaseClient.auth.getSession();
     if(!sessionData.session){window.location.href="sign-in.html?next=partner-apply.html";return;}
+
     const payload=Object.fromEntries(new FormData(partnerForm).entries());
-    const {data,error}=await supabaseClient.functions.invoke("partner-application",{body:payload});
-    if(error){setMessage(partnerForm,"We could not submit your application. Please try again.","error");setBusy(partnerForm,false);return;}
-    setMessage(partnerForm,data?.emailSent===false?"Your application was saved successfully. Our team will still be able to review it.":"Application submitted. Our team has been notified and will review your request.","success");
-    partnerForm.reset();setBusy(partnerForm,false);
+    const userId=sessionData.session.user.id;
+
+    // Save the application directly through the authenticated Supabase client.
+    // This keeps partner applications working even when the optional notification
+    // Edge Function has not been deployed yet.
+    const {error}=await supabaseClient.from("partner_applications").insert({
+      user_id:userId,
+      company_name:String(payload.company_name||"").trim(),
+      contact_name:String(payload.contact_name||"").trim(),
+      business_email:String(payload.business_email||"").trim(),
+      phone:String(payload.phone||"").trim()||null,
+      website:String(payload.website||"").trim()||null,
+      company_type:String(payload.company_type||"").trim()||null,
+      job_posting_interest:String(payload.job_posting_interest||"").trim()||null,
+      message:String(payload.message||"").trim()||null,
+      status:"pending"
+    });
+
+    if(error){
+      console.error("YourTurn partner application submission failed:",error);
+      setMessage(partnerForm,error.code==="23505"?"You already have a partner application on file.":"We could not submit your application. Please try again.","error");
+      setBusy(partnerForm,false);
+      return;
+    }
+
+    setMessage(partnerForm,"Application submitted. Our team can now review your request.","success");
+    partnerForm.reset();
+    setBusy(partnerForm,false);
   });
 });
