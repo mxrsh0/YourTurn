@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const milesBetween = (a,b) => { const r=3958.7613, toRad=n=>n*Math.PI/180, dLat=toRad(b.lat-a.lat), dLon=toRad(b.lon-a.lon); const x=Math.sin(dLat/2)**2+Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLon/2)**2; return r*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x)); };
   const sourceName = job => job.partner_id ? "YourTurn Partner" : (job.source_name || "Employer / Agency");
   const matchesSource = job => { const selected=sourceChecks.filter(x=>x.checked).map(x=>x.value); if(!selected.length)return true; const source=sourceName(job).toLowerCase(); return selected.some(x=>x==="partner" ? !!job.partner_id : source.includes(x)); };
-  const matchesLocation = job => { const term=locationInput.value.trim().toLowerCase(); if(term && !(job.location_text||"").toLowerCase().includes(term)) return false; const centre=userCoordinates||typedCoordinates; const radius=Number(distance.value); if(centre && job.latitude!=null && job.longitude!=null && radius < 100) return milesBetween(centre,{lat:Number(job.latitude),lon:Number(job.longitude)}) <= radius; return true; };
+  const matchesLocation = job => { const term=locationInput.value.trim().toLowerCase(); if(term && !(job.location_text||"").toLowerCase().includes(term)) return false; const centre=userCoordinates||typedCoordinates; const radius=Number(distance.value); if(centre && job.latitude!=null && job.longitude!=null) return milesBetween(centre,{lat:Number(job.latitude),lon:Number(job.longitude)}) <= radius; return true; };
   const render = () => {
     const term=search.value.trim().toLowerCase();
     let filtered=jobs.filter(job => job.is_active!==false && matchesSource(job) && matchesLocation(job) && (!contract.value || (job.employment_type||"").toLowerCase()===contract.value) && (!term || `${job.title} ${job.employer_name} ${job.description} ${job.location_text}`.toLowerCase().includes(term)));
@@ -39,9 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if(error){list.innerHTML='<div class="empty-state"><h2>Jobs could not be loaded</h2><p>Please refresh the page and try again.</p></div>';return;}
   jobs=data||[]; render();
 
-  // Use the established Geolocation API for the actual permission request.
-  // Calling getCurrentPosition() directly from this user click is what causes
-  // Chrome to display its native site-location permission prompt.
+  // Standard browser Geolocation API. The browser, not YourTurn, owns the permission prompt.
   locationControl?.addEventListener("click", () => {
     if (!window.isSecureContext) {
       locationStatus.textContent = "Location services require a secure HTTPS connection.";
@@ -51,16 +49,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       locationStatus.textContent = "Location services are not supported by this browser.";
       return;
     }
-
     locationStatus.textContent = "Requesting your location…";
     locationControl.disabled = true;
-
     navigator.geolocation.getCurrentPosition(
       position => {
-        userCoordinates = {
-          lat: position.coords.latitude,
-          lon: position.coords.longitude
-        };
+        userCoordinates = {lat: position.coords.latitude, lon: position.coords.longitude};
         typedCoordinates = null;
         locationStatus.textContent = "Using your current location.";
         locationControl.disabled = false;
@@ -70,16 +63,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         locationControl.disabled = false;
         const messages = {
           1: "Location permission was denied. Allow location for YourTurn in Chrome and try again.",
-          2: "Your location could not be determined. Please try again or enter a town, village or postcode.",
+          2: "Your location could not be determined. Please try again or enter a postcode, town or village.",
           3: "Location request timed out. Please try again."
         };
         locationStatus.textContent = messages[error.code] || "We couldn't access your location. Please try again.";
+        console.warn("YourTurn geolocation error:", error.code, error.message);
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
-      }
+      {enableHighAccuracy:true, timeout:15000, maximumAge:0}
     );
   });
 
