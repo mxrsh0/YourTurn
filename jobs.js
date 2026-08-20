@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const distance = document.querySelector("#job-distance");
   const distanceValue = document.querySelector("#distance-value");
   const locationStatus = document.querySelector("#location-status");
+  const locationControl = document.querySelector("#use-location");
   const sourceChecks = [...document.querySelectorAll("input[name=source]")];
   const contract = document.querySelector("#contract-type");
   const search = document.querySelector("#job-keywords");
@@ -38,11 +39,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   if(error){list.innerHTML='<div class="empty-state"><h2>Jobs could not be loaded</h2><p>Please refresh the page and try again.</p></div>';return;}
   jobs=data||[]; render();
 
-  document.querySelector("#use-location")?.addEventListener("click",()=>{
-    if(!navigator.geolocation){locationStatus.textContent="Location services are not supported by this browser.";return;}
-    locationStatus.textContent="Requesting your location…";
-    navigator.geolocation.getCurrentPosition(position=>{userCoordinates={lat:position.coords.latitude,lon:position.coords.longitude};typedCoordinates=null;locationStatus.textContent="Using your current location. Your browser controls the permission request.";render();},error=>{const messages={1:"Location permission was denied. You can allow it in your browser settings and try again.",2:"Your location could not be determined. Please try again or enter a town, village or postcode.",3:"Location request timed out. Please try again."};locationStatus.textContent=messages[error.code]||"We couldn't access your location.";},{enableHighAccuracy:true,timeout:10000,maximumAge:300000});
-  });
+  const handleLocation = event => {
+    const element = event.currentTarget || event.target;
+    if(element?.position){
+      const { latitude, longitude } = element.position.coords;
+      userCoordinates={lat:latitude,lon:longitude};
+      typedCoordinates=null;
+      locationStatus.textContent="Using your current location.";
+      render();
+    } else if(element?.error){
+      locationStatus.textContent=element.error.message || "We couldn't access your location. Please try again.";
+    }
+  };
+
+  if(locationControl && "HTMLGeolocationElement" in window){
+    locationControl.addEventListener("location", handleLocation);
+  } else {
+    const fallbackButton=locationControl?.querySelector("button");
+    fallbackButton?.addEventListener("click",()=>{
+      if(!navigator.geolocation){locationStatus.textContent="Location services are not supported by this browser.";return;}
+      locationStatus.textContent="Requesting your location…";
+      navigator.geolocation.getCurrentPosition(position=>{userCoordinates={lat:position.coords.latitude,lon:position.coords.longitude};typedCoordinates=null;locationStatus.textContent="Using your current location.";render();},error=>{const messages={1:"Location permission was denied. You can allow it in your browser settings and try again.",2:"Your location could not be determined. Please try again or enter a town, village or postcode.",3:"Location request timed out. Please try again."};locationStatus.textContent=messages[error.code]||"We couldn't access your location.";},{enableHighAccuracy:true,timeout:10000,maximumAge:300000});
+    });
+  }
+
   document.querySelector("#use-search-location")?.addEventListener("click",async()=>{const value=locationInput.value.trim();if(!value){locationStatus.textContent="Enter a postcode, town or village first.";return;}locationStatus.textContent="Finding that location…";try{typedCoordinates=await geocode(value);userCoordinates=null;locationStatus.textContent=`Using ${typedCoordinates.label}.`;render();}catch{locationStatus.textContent="We couldn't find that location. Try a more specific postcode, town or village.";}});
   const controls=[search,contract,...sourceChecks,sort];controls.forEach(control=>control?.addEventListener("input",render));
   distance.addEventListener("input",()=>{distanceValue.textContent=`${distance.value} miles`;render();});
