@@ -20,6 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
     button.textContent = busy ? "Please wait…" : button.dataset.defaultText;
   };
 
+  const getJobSeekerDestination = async () => {
+    const { data: profile } = await supabaseClient.from("job_seeker_profiles").select("profile_completed").maybeSingle();
+    return profile?.profile_completed ? "jobs.html" : "setup-profile.html";
+  };
+
   if (signInForm) {
     signInForm.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -28,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const email = signInForm.email.value.trim();
       const password = signInForm.password.value;
-      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
       if (error) {
         setMessage(signInForm, error.message || "We could not sign you in.", "error");
@@ -37,8 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const next = new URLSearchParams(window.location.search).get("next");
-      const safeNext = next && /^[a-z0-9-]+\.html$/i.test(next) ? next : "jobs.html";
-      window.location.href = safeNext;
+      if (next && /^[a-z0-9-]+\.html$/i.test(next)) {
+        window.location.href = next;
+        return;
+      }
+
+      const destination = await getJobSeekerDestination();
+      window.location.href = destination;
     });
   }
 
@@ -84,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setBusy(createForm, false);
 
       if (data?.session) {
-        window.location.href = "jobs.html";
+        window.location.href = "setup-profile.html";
         return;
       }
 
