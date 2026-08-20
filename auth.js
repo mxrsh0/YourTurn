@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const createForm = document.querySelector("#create-account-form");
   const partnerForm = document.querySelector("#partner-application-form");
 
+  const PRODUCTION_CONFIRMATION_URL = "https://yourturn.org.uk/email-confirmed.html";
+
   const setMessage = (form, text, type = "") => {
     const message = form?.querySelector(".form-message");
     if (!message) return;
@@ -26,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const email = signInForm.email.value.trim();
       const password = signInForm.password.value;
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
       if (error) {
         setMessage(signInForm, error.message || "We could not sign you in.", "error");
@@ -68,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         password,
         options: {
           data: { full_name: fullName },
-          emailRedirectTo: `${window.location.origin}/email-confirmed.html`,
+          emailRedirectTo: PRODUCTION_CONFIRMATION_URL,
         },
       });
 
