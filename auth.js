@@ -1,77 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const signInForm = document.querySelector("#sign-in-form");
-  const createForm = document.querySelector("#create-account-form");
-  const partnerForm = document.querySelector("#partner-application-form");
-  const PRODUCTION_CONFIRMATION_URL = "https://yourturn.org.uk/email-confirmed.html";
-
-  const setMessage = (form, text, type = "") => { const message=form?.querySelector(".form-message"); if(!message)return; message.textContent=text; message.className=`form-message ${type}`; };
-  const setBusy = (form, busy) => { const button=form?.querySelector(".auth-submit"); if(!button)return; if(!button.dataset.defaultText)button.dataset.defaultText=button.textContent; button.disabled=busy; button.textContent=busy?"Please wait…":button.dataset.defaultText; };
-
-  const getDestination = async () => {
-    const { data: account } = await supabaseClient.from("profiles").select("account_type").maybeSingle();
-    if (account?.account_type !== "job_seeker") return "jobs.html";
-    const { data: profile } = await supabaseClient.from("job_seeker_profiles").select("profile_completed").maybeSingle();
-    return profile?.profile_completed ? "jobs.html" : "setup-profile.html";
-  };
-
-  if(signInForm)signInForm.addEventListener("submit",async event=>{
-    event.preventDefault(); setMessage(signInForm,""); setBusy(signInForm,true);
-    const email=signInForm.email.value.trim(), password=signInForm.password.value;
-    const {error}=await supabaseClient.auth.signInWithPassword({email,password});
-    if(error){setMessage(signInForm,error.message||"We could not sign you in.","error");setBusy(signInForm,false);return;}
-    const next=new URLSearchParams(window.location.search).get("next");
-    if(next&&/^[a-z0-9-]+\.html$/i.test(next)){window.location.href=next;return;}
-    window.location.href=await getDestination();
-  });
-
-  if(createForm)createForm.addEventListener("submit",async event=>{
-    event.preventDefault(); setMessage(createForm,"");
-    const password=createForm.password.value, confirmation=createForm.confirm_password.value;
-    if(password!==confirmation){setMessage(createForm,"Your passwords do not match.","error");return;}
-    if(password.length<8){setMessage(createForm,"Please use a password with at least 8 characters.","error");return;}
-    if(!createForm.terms.checked){setMessage(createForm,"Please accept the Terms of Service and Privacy Policy.","error");return;}
-    setBusy(createForm,true);
-    const fullName=createForm.full_name.value.trim(), email=createForm.email.value.trim();
-    const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name:fullName},emailRedirectTo:PRODUCTION_CONFIRMATION_URL}});
-    if(error){setMessage(createForm,error.message||"We could not create your account.","error");setBusy(createForm,false);return;}
-    createForm.reset();setBusy(createForm,false);
-    if(data?.session){window.location.href="setup-profile.html";return;}
-    window.location.href=`email-sent.html?email=${encodeURIComponent(email)}`;
-  });
-
-  if(partnerForm)partnerForm.addEventListener("submit",async event=>{
-    event.preventDefault();setMessage(partnerForm,"");setBusy(partnerForm,true);
-    const {data:sessionData}=await supabaseClient.auth.getSession();
-    if(!sessionData.session){window.location.href="sign-in.html?next=partner-apply.html";return;}
-
-    const payload=Object.fromEntries(new FormData(partnerForm).entries());
-    const userId=sessionData.session.user.id;
-
-    // Save the application directly through the authenticated Supabase client.
-    // This keeps partner applications working even when the optional notification
-    // Edge Function has not been deployed yet.
-    const {error}=await supabaseClient.from("partner_applications").insert({
-      user_id:userId,
-      company_name:String(payload.company_name||"").trim(),
-      contact_name:String(payload.contact_name||"").trim(),
-      business_email:String(payload.business_email||"").trim(),
-      phone:String(payload.phone||"").trim()||null,
-      website:String(payload.website||"").trim()||null,
-      company_type:String(payload.company_type||"").trim()||null,
-      job_posting_interest:String(payload.job_posting_interest||"").trim()||null,
-      message:String(payload.message||"").trim()||null,
-      status:"pending"
-    });
-
-    if(error){
-      console.error("YourTurn partner application submission failed:",error);
-      setMessage(partnerForm,error.code==="23505"?"You already have a partner application on file.":"We could not submit your application. Please try again.","error");
-      setBusy(partnerForm,false);
-      return;
-    }
-
-    setMessage(partnerForm,"Application submitted. Our team can now review your request.","success");
-    partnerForm.reset();
-    setBusy(partnerForm,false);
-  });
+  const signInForm=document.querySelector("#sign-in-form"), createForm=document.querySelector("#create-account-form"), partnerForm=document.querySelector("#partner-application-form");
+  const PRODUCTION_CONFIRMATION_URL="https://yourturn.org.uk/email-confirmed.html";
+  const setMessage=(form,text,type="")=>{const message=form?.querySelector(".form-message");if(!message)return;message.textContent=text;message.className=`form-message ${type}`;};
+  const setBusy=(form,busy)=>{const button=form?.querySelector(".auth-submit");if(!button)return;if(!button.dataset.defaultText)button.dataset.defaultText=button.textContent;button.disabled=busy;button.textContent=busy?"Please wait…":button.dataset.defaultText;};
+  const getDestination=async()=>{const {data:account}=await supabaseClient.from("profiles").select("account_type").maybeSingle();if(account?.account_type==="partner")return "partner-hub.html";const {data:profile}=await supabaseClient.from("job_seeker_profiles").select("profile_completed").maybeSingle();return profile?.profile_completed?"jobs.html":"setup-profile.html";};
+  if(signInForm)signInForm.addEventListener("submit",async event=>{event.preventDefault();setMessage(signInForm,"");setBusy(signInForm,true);const email=signInForm.email.value.trim(),password=signInForm.password.value;const {error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){setMessage(signInForm,error.message||"We could not sign you in.","error");setBusy(signInForm,false);return;}const next=new URLSearchParams(window.location.search).get("next");if(next&&/^[a-z0-9-]+\.html$/i.test(next)){window.location.href=next;return;}window.location.href=await getDestination();});
+  if(createForm)createForm.addEventListener("submit",async event=>{event.preventDefault();setMessage(createForm,"");const password=createForm.password.value,confirmation=createForm.confirm_password.value;if(password!==confirmation){setMessage(createForm,"Your passwords do not match.","error");return;}if(password.length<8){setMessage(createForm,"Please use a password with at least 8 characters.","error");return;}if(!createForm.terms.checked){setMessage(createForm,"Please accept the Terms of Service and Privacy Policy.","error");return;}setBusy(createForm,true);const fullName=createForm.full_name.value.trim(),email=createForm.email.value.trim();const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name:fullName},emailRedirectTo:PRODUCTION_CONFIRMATION_URL}});if(error){setMessage(createForm,error.message||"We could not create your account.","error");setBusy(createForm,false);return;}createForm.reset();setBusy(createForm,false);if(data?.session){window.location.href="setup-profile.html";return;}window.location.href=`email-sent.html?email=${encodeURIComponent(email)}`;});
+  if(partnerForm)partnerForm.addEventListener("submit",async event=>{event.preventDefault();setMessage(partnerForm,"");setBusy(partnerForm,true);const {data:sessionData}=await supabaseClient.auth.getSession();if(!sessionData.session){window.location.href="sign-in.html?next=partner-apply.html";return;}const payload=Object.fromEntries(new FormData(partnerForm).entries()),userId=sessionData.session.user.id;const {error}=await supabaseClient.from("partner_applications").insert({user_id:userId,company_name:String(payload.company_name||"").trim(),contact_name:String(payload.contact_name||"").trim(),business_email:String(payload.business_email||"").trim(),phone:String(payload.phone||"").trim()||null,website:String(payload.website||"").trim()||null,company_type:String(payload.company_type||"").trim()||null,job_posting_interest:String(payload.job_posting_interest||"").trim()||null,message:String(payload.message||"").trim()||null,status:"pending"});if(error){console.error("YourTurn partner application submission failed:",error);setMessage(partnerForm,error.code==="23505"?"You already have a partner application on file.":"We could not submit your application. Please try again.","error");setBusy(partnerForm,false);return;}setMessage(partnerForm,"Application submitted. Our team can now review your request.","success");partnerForm.reset();setBusy(partnerForm,false);});
 });
